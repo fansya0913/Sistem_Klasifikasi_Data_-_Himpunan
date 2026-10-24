@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistem Klasifikasi Data & Himpunan - Dark Neon Edition</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0b0f19;
+  --panel-bg: #111827;
+  --card-bg: #1f2937;
+  --border: #374151;
+  
+  --neon-cyan: #06b6d4;
+  --neon-purple: #a855f7;
+  --neon-emerald: #10b981;
+  --neon-rose: #f43f5e;
+  --neon-amber: #f59e0b;
+  
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  padding-bottom: 50px;
+}
+
+/* Header Cyber Style */
+header {
+  background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-dark) 100%);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+  padding: 50px 24px 40px;
+  text-align: center;
+  position: relative;
+}
+
+header .badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  padding: 6px 16px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+}
+
+h1 {
+  font-size: clamp(28px, 4.5vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+header p {
+  max-width: 650px;
+  margin: 0 auto;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+/* Container */
+main {
+  max-width: 1200px;
+  margin: 30px auto 0;
+  padding: 0 20px;
+}
+
+/* Stats Cards Neon */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 3px;
+}
+
+.stat.stat-u::before { background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+.stat.stat-a::before { background: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple); }
+.stat.stat-b::before { background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber); }
+.stat.stat-c::before { background: var(--neon-emerald); box-shadow: 0 0 10px var(--neon-emerald); }
+
+.stat:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.stat small {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  margin: 6px 0 2px;
+}
+
+.stat .sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.wide {
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h2::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  background: var(--neon-purple);
+  border-radius: 4px;
+  box-shadow: 0 0 8px var(--neon-purple);
+}
+
+/* Controls */
+label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  display: block;
+  margin: 16px 0 8px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Actions Buttons */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+button {
+  flex: 1;
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 18px;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+}
+
+button.secondary {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+button.secondary:hover {
+  background: #374151;
+  color: white;
+}
+
+/* Result Box */
+.result-box {
+  background: rgba(31, 41, 55, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 24px;
+}
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.result-head strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+}
+
+.count-badge {
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+ul.results {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+ul.results li {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+ul.results li b {
+  color: var(--neon-purple);
+}
+
+.empty {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+}
+
+/* Pills & Badges */
+.pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* Cards List */
+.diagram {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.set-card {
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.set-card b {
+  display: block;
+  font-size: 13px;
+  color: var(--neon-cyan);
+  margin-bottom: 8px;
+}
+
+.set-card span {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  display: block;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.set-card .note {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--neon-emerald);
+}
+
+/* Venn Diagram Dark */
+.venn-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.venn-svg {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
+
+.venn-circle {
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.venn-circle:hover {
+  opacity: 0.75;
+}
+
+.venn-label {
+  font-size: 18px;
+  font-weight: 800;
+  fill: #ffffff;
+  text-anchor: middle;
+}
+
+.venn-region {
+  font-size: 11px;
+  fill: #f3f4f6;
+  text-anchor: middle;
+  font-weight: 700;
+}
+
+.venn-region-list {
+  font-size: 9.5px;
+  fill: #9ca3af;
+  text-anchor: middle;
+  font-weight: 500;
+}
+
+.venn-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.venn-legend span {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 6px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+
+/* Table Dark */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+th, td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+.tag-mem {
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--neon-purple);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* Helpers */
+.note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 30px 20px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .row { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .panel { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">PJBL-2 · Pertemuan 5–7</div>
+  <h1>Sistem Klasifikasi Data & Himpunan</h1>
+  <p>Platform analisis visual untuk klasifikasi mahasiswa berbasis teori himpunan, dilengkapi kalkulator operasi dan Diagram Venn interaktif.</p>
+</header>
+
+<main>
+  <!-- Stats Section -->
+  <div class="stats">
+    <div class="stat stat-u">
+      <small>Semesta (U)</small>
+      <strong id="uCount">0</strong>
+      <div class="sub">Total Mahasiswa</div>
+    </div>
+    <div class="stat stat-a">
+      <small>Himpunan A</small>
+      <strong id="aCount">0</strong>
+      <div class="sub">Matematika Diskrit</div>
+    </div>
+    <div class="stat stat-b">
+      <small>Himpunan B</small>
+      <strong id="bCount">0</strong>
+      <div class="sub">Algoritma & Pemrograman</div>
+    </div>
+    <div class="stat stat-c">
+      <small>Himpunan C</small>
+      <strong id="cCount">0</strong>
+      <div class="sub">Basis Data</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- Kalkulator Operasi -->
+    <section class="panel">
+      <h2>01 · Operasi Himpunan</h2>
+      
+      <label for="operation">Jenis Operasi</label>
+      <select id="operation">
+        <option value="union">Gabungan (A ∪ B)</option>
+        <option value="intersection">Irisan (A ∩ B)</option>
+        <option value="difference">Selisih (A − B)</option>
+        <option value="complement">Komplemen (U − A)</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label for="set1">Himpunan Pertama</label>
+          <select id="set1">
+            <option value="A">A — Matematika Diskrit</option>
+            <option value="B">B — Algoritma & Pemrograman</option>
+            <option value="C">C — Basis Data</option>
+          </select>
+        </div>
+        <div>
+          <label for="set2">Himpunan Kedua</label>
+          <select id="set2">
+            <option value="B">B — Algoritma & Pemrograman</option>
+            <option value="A">A — Matematika Diskrit</option>
+            <option value="C">C — Basis Data</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="calculate">Hitung Hasil</button>
+        <button class="secondary" id="showAll">Semua Data</button>
+      </div>
+
+      <div class="result-box">
+        <div class="result-head">
+          <strong id="resultTitle">Hasil Operasi</strong>
+          <span class="count-badge" id="resultCount">0 anggota</span>
+        </div>
+        <ul class="results" id="resultList">
+          <li>Pilih operasi di atas lalu klik "Hitung Hasil".</li>
+        </ul>
+        <p class="note" id="formulaNote"></p>
+      </div>
+
+      <h3 style="margin-top: 24px; font-size: 13px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Info Himpunan</h3>
+      <div class="pills" style="margin-top: 10px;">
+        <span class="pill">U = Semesta Data</span>
+        <span class="pill">A = Matdis</span>
+        <span class="pill">B = Alpro</span>
+        <span class="pill">C = Basdat</span>
+      </div>
+    </section>
+
+    <!-- Ringkasan Keanggotaan -->
+    <section class="panel">
+      <h2>02 · Keanggotaan Himpunan</h2>
+      <p class="note">Daftar mahasiswa yang terdaftar pada masing-masing kategori mata kuliah.</p>
+      
+      <div id="setCards" class="diagram"></div>
+
+      <h3 style="margin-top: 24px; font-size: 13px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Aturan Pemetaan</h3>
+      <ul class="note" style="padding-left: 18px; margin-top: 10px;">
+        <li>Mahasiswa Matematika Diskrit ➔ <b>Himpunan A</b></li>
+        <li>Mahasiswa Algoritma & Pemrograman ➔ <b>Himpunan B</b></li>
+        <li>Mahasiswa Basis Data ➔ <b>Himpunan C</b></li>
+        <li><b>Komplemen</b>: Mahasiswa di luar himpunan terpilih.</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Diagram Venn Section -->
+  <section class="panel wide">
+    <h2>03 · Visualisasi Diagram Venn</h2>
+    <p class="note">Pemetaan interaktif tiga himpunan secara otomatis. Menampilkan distribusi mahasiswa di area irisan secara eksplisit.</p>
+    
+    <div class="venn-wrap">
+      <svg class="venn-svg" viewBox="0 0 600 410" role="img">
+        <circle class="venn-circle" cx="235" cy="165" r="120" fill="#a855f7" stroke="#c084fc" stroke-width="2" />
+        <circle class="venn-circle" cx="365" cy="165" r="120" fill="#f59e0b" stroke="#fbbf24" stroke-width="2" />
+        <circle class="venn-circle" cx="300" cy="260" r="120" fill="#10b981" stroke="#34d399" stroke-width="2" />
+        <text class="venn-label" x="150" y="70">A</text>
+        <text class="venn-label" x="450" y="70">B</text>
+        <text class="venn-label" x="300" y="395">C</text>
+        <g id="vennRegions"></g>
+      </svg>
+    </div>
+    
+    <div class="venn-legend">
+      <span style="color: var(--neon-purple); border-color: rgba(168, 85, 247, 0.4);">🟣 A · Matematika Diskrit</span>
+      <span style="color: var(--neon-amber); border-color: rgba(245, 158, 11, 0.4);">🟡 B · Algoritma & Pemrograman</span>
+      <span style="color: var(--neon-emerald); border-color: rgba(16, 185, 129, 0.4);">🟢 C · Basis Data</span>
+    </div>
+    <p class="note" id="vennSummary" style="text-align: center; margin-top: 16px; font-weight: 500;"></p>
+  </section>
+
+  <!-- Table Dataset -->
+  <section class="panel wide">
+    <div class="result-head">
+      <h2 style="margin:0">04 · Master Dataset</h2>
+      <span class="count-badge" id="tableCount">15 Record</span>
+    </div>
+    
+    <label for="search">Filter Data Mahasiswa</label>
+    <input id="search" placeholder="Cari ID, Nama, atau Mata Kuliah...">
+    
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nama Mahasiswa</th>
+            <th>Mata Kuliah Diambil</th>
+            <th>Keanggotaan</th>
+          </tr>
+        </thead>
+        <tbody id="datasetBody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  PJBL-2 · Sistem Klasifikasi Data dengan Himpunan &copy; 2026
+</footer>
+
+<script>
+const data = [
+  {id:"M001",nama:"Alya Putri",mata_kuliah:["Matematika Diskrit","Algoritma dan Pemrograman"]},
+  {id:"M002",nama:"Bima Pratama",mata_kuliah:["Matematika Diskrit","Basis Data"]},
+  {id:"M003",nama:"Citra Lestari",mata_kuliah:["Algoritma dan Pemrograman","Basis Data"]},
+  {id:"M004",nama:"Daffa Ramadhan",mata_kuliah:["Matematika Diskrit","Algoritma dan Pemrograman","Basis Data"]},
+  {id:"M005",nama:"Eka Safitri",mata_kuliah:["Matematika Diskrit"]},
+  {id:"M006",nama:"Farhan Akbar",mata_kuliah:["Algoritma dan Pemrograman"]},
+  {id:"M007",nama:"Gita Maharani",mata_kuliah:["Basis Data"]},
+  {id:"M008",nama:"Hafiz Maulana",mata_kuliah:["Matematika Diskrit","Basis Data"]},
+  {id:"M009",nama:"Intan Permata",mata_kuliah:["Matematika Diskrit","Algoritma dan Pemrograman"]},
+  {id:"M010",nama:"Joko Saputra",mata_kuliah:["Algoritma dan Pemrograman","Basis Data"]},
+  {id:"M011",nama:"Kirana Dewi",mata_kuliah:["Matematika Diskrit","Algoritma dan Pemrograman","Basis Data"]},
+  {id:"M012",nama:"Lukman Hakim",mata_kuliah:["Matematika Diskrit"]},
+  {id:"M013",nama:"Maya Anggraini",mata_kuliah:["Basis Data"]},
+  {id:"M014",nama:"Naufal Rizki",mata_kuliah:["Matematika Diskrit","Algoritma dan Pemrograman"]},
+  {id:"M015",nama:"Ovi Amelia",mata_kuliah:["Algoritma dan Pemrograman"]}
+];
+
+const labels = {
+  A:"Matematika Diskrit",
+  B:"Algoritma dan Pemrograman",
+  C:"Basis Data"
+};
+
+const membership = {A:new Set(), B:new Set(), C:new Set()};
+
+data.forEach(s => {
+  if(s.mata_kuliah.includes(labels.A)) membership.A.add(s.id);
+  if(s.mata_kuliah.includes(labels.B)) membership.B.add(s.id);
+  if(s.mata_kuliah.includes(labels.C)) membership.C.add(s.id);
+});
+
+const U = new Set(data.map(s => s.id));
+const byId = id => data.find(s => s.id === id);
+const sortSet = s => [...s].sort();
+
+function renderVenn(){
+  const regions = [
+    {key:"A", label:"A saja", x:175, y:155, members:s=>membership.A.has(s.id)&&!membership.B.has(s.id)&&!membership.C.has(s.id)},
+    {key:"B", label:"B saja", x:425, y:155, members:s=>membership.B.has(s.id)&&!membership.A.has(s.id)&&!membership.C.has(s.id)},
+    {key:"C", label:"C saja", x:300, y:337, members:s=>membership.C.has(s.id)&&!membership.A.has(s.id)&&!membership.B.has(s.id)},
+    {key:"AB", label:"A ∩ B", x:300, y:130, members:s=>membership.A.has(s.id)&&membership.B.has(s.id)&&!membership.C.has(s.id)},
+    {key:"AC", label:"A ∩ C", x:235, y:253, members:s=>membership.A.has(s.id)&&membership.C.has(s.id)&&!membership.B.has(s.id)},
+    {key:"BC", label:"B ∩ C", x:365, y:253, members:s=>membership.B.has(s.id)&&membership.C.has(s.id)&&!membership.A.has(s.id)},
+    {key:"ABC", label:"A ∩ B ∩ C", x:300, y:210, members:s=>membership.A.has(s.id)&&membership.B.has(s.id)&&membership.C.has(s.id)}
+  ];
+  const svgText = (x,y,cls,txt) => `<text class="${cls}" x="${x}" y="${y}">${txt}</text>`;
+  document.getElementById("vennRegions").innerHTML = regions.map(r=>{
+    const people = data.filter(r.members);
+    const shown = people.slice(0,3);
+    let out = svgText(r.x, r.y, "venn-region", `${r.label} (${people.length})`);
+    shown.forEach((person,i)=>{ out += svgText(r.x, r.y+14+(i*12), "venn-region-list", person.nama); });
+    if(people.length>3) out += svgText(r.x, r.y+14+(3*12), "venn-region-list", `+${people.length-3} lainnya`);
+    if(people.length===0) out += svgText(r.x, r.y+13, "venn-region-list", "∅");
+    return out;
+  }).join("");
+
+  const bothAB = [...membership.A].filter(id=>membership.B.has(id)).length;
+  const allThree = data.filter(s=>membership.A.has(s.id)&&membership.B.has(s.id)&&membership.C.has(s.id)).length;
+  document.getElementById("vennSummary").textContent = `Total Semesta: ${U.size} Mahasiswa · Irisan A ∩ B: ${bothAB} orang · Irisan A ∩ B ∩ C: ${allThree} orang`;
+}
+
+function renderSetCards(){
+  document.getElementById("setCards").innerHTML = ["A","B","C"].map(k => `
+    <div class="set-card">
+      <b>${k} · ${labels[k]}</b>
+      <span>${sortSet(membership[k]).map(id => id+" — "+byId(id).nama).join("<br>")}</span>
+      <div class="note">${membership[k].size} Mahasiswa</div>
+    </div>`).join("");
+}
+
+function renderTable(){
+  const q = document.getElementById("search").value.toLowerCase();
+  const rows = data.filter(s =>
+    (s.id+" "+s.nama+" "+s.mata_kuliah.join(" ")).toLowerCase().includes(q)
+  );
+
+  document.getElementById("datasetBody").innerHTML = rows.map(s => {
+    const mem = ["A","B","C"].filter(k => membership[k].has(s.id)).join(", ") || "—";
+    return `<tr>
+      <td><b style="color:var(--neon-cyan)">${s.id}</b></td>
+      <td>${s.nama}</td>
+      <td>${s.mata_kuliah.join(", ")}</td>
+      <td><span class="tag-mem">${mem}</span></td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("tableCount").textContent = rows.length+" Record";
+}
+
+function calculate(){
+  const op = document.getElementById("operation").value;
+  const a = document.getElementById("set1").value;
+  const b = document.getElementById("set2").value;
+  const S1 = membership[a];
+  const S2 = membership[b];
+
+  let result, title, formula;
+
+  if(op === "union"){
+    result = new Set([...S1,...S2]);
+    title = `${a} ∪ ${b}`;
+    formula = `Gabungan: Semua mahasiswa yang terdaftar di ${a} atau ${b}.`;
+  }
+  else if(op === "intersection"){
+    result = new Set([...S1].filter(x => S2.has(x)));
+    title = `${a} ∩ ${b}`;
+    formula = `Irisan: Mahasiswa yang terdaftar di ${a} sekaligus ${b}.`;
+  }
+  else if(op === "difference"){
+    result = new Set([...S1].filter(x => !S2.has(x)));
+    title = `${a} − ${b}`;
+    formula = `Selisih: Mahasiswa di ${a} yang tidak mengambil ${b}.`;
+  }
+  else{
+    result = new Set([...U].filter(x => !S1.has(x)));
+    title = `U − ${a}`;
+    formula = `Komplemen: Mahasiswa semesta U yang tidak memilih ${a}.`;
+  }
+
+  const ids = sortSet(result);
+  document.getElementById("resultTitle").textContent = title;
+  document.getElementById("resultCount").textContent = ids.length+" anggota";
+  document.getElementById("resultList").innerHTML = ids.length
+    ? ids.map(id => `<li><b>${id}</b> — ${byId(id).nama}</li>`).join("")
+    : '<li class="empty">Hasil kosong (∅). Tidak ada data yang sesuai.</li>';
+
+  document.getElementById("formulaNote").textContent = formula;
+}
+
+document.getElementById("calculate").addEventListener("click", calculate);
+
+document.getElementById("showAll").addEventListener("click", () => {
+  document.getElementById("search").value = "";
+  renderTable();
+  document.getElementById("resultTitle").textContent = "Semesta U";
+  document.getElementById("resultCount").textContent = U.size+" anggota";
+  document.getElementById("resultList").innerHTML = data.map(s =>
+    `<li><b>${s.id}</b> — ${s.nama}</li>`).join("");
+  document.getElementById("formulaNote").textContent = "Semesta U berisi seluruh daftar mahasiswa.";
+});
+
+document.getElementById("search").addEventListener("input", renderTable);
+
+document.getElementById("operation").addEventListener("change", () => {
+  const op = document.getElementById("operation").value;
+  document.getElementById("set2").disabled = op === "complement";
+  calculate();
+});
+
+document.getElementById("set1").addEventListener("change", calculate);
+document.getElementById("set2").addEventListener("change", calculate);
+
+document.getElementById("uCount").textContent = U.size;
+document.getElementById("aCount").textContent = membership.A.size;
+document.getElementById("bCount").textContent = membership.B.size;
+document.getElementById("cCount").textContent = membership.C.size;
+
+renderSetCards();
+renderVenn();
+renderTable();
+calculate();
+</script>
+</body>
+</html>
